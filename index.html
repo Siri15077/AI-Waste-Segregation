@@ -1,0 +1,1622 @@
+<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EcoVision AI | Waste Scanner</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+
+    min-height: 100vh;
+
+    color: #ecfff5;
+
+    background:
+        radial-gradient(circle at 15% 10%, rgba(0,255,160,.12), transparent 30%),
+        radial-gradient(circle at 85% 80%, rgba(0,180,255,.08), transparent 30%),
+        #030d09;
+}
+
+/* ================= NAVBAR ================= */
+
+nav {
+
+    height: 72px;
+
+    padding: 0 7%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    background: rgba(3,20,14,.9);
+
+    border-bottom: 1px solid rgba(80,255,170,.1);
+
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+
+    font-size: 23px;
+
+    font-weight: 800;
+}
+
+.logo span {
+
+    color: #36f39b;
+}
+
+.logo-icon {
+
+    display: inline-flex;
+
+    width: 38px;
+    height: 38px;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 8px;
+
+    border-radius: 11px;
+
+    background: rgba(40,240,145,.1);
+
+    border: 1px solid rgba(70,255,170,.2);
+}
+
+.status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    background: rgba(40,230,140,.06);
+
+    border: 1px solid rgba(70,255,170,.12);
+
+    color: #8fffc0;
+
+    font-size: 12px;
+}
+
+.status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #39ef97;
+
+    box-shadow: 0 0 12px #39ef97;
+
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+
+    0%,100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .35;
+    }
+}
+
+/* ================= HERO ================= */
+
+.hero {
+
+    text-align: center;
+
+    padding: 55px 20px 35px;
+}
+
+.badge {
+
+    display: inline-block;
+
+    padding: 8px 16px;
+
+    border-radius: 25px;
+
+    background: rgba(40,240,150,.07);
+
+    border: 1px solid rgba(70,255,170,.14);
+
+    color: #63f4a8;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+.hero h1 {
+
+    margin-top: 20px;
+
+    font-size: clamp(38px,6vw,62px);
+
+    letter-spacing: -2px;
+}
+
+.hero h1 span {
+
+    color: #38ef9b;
+}
+
+.hero p {
+
+    max-width: 650px;
+
+    margin: 15px auto 0;
+
+    color: #7f9d8e;
+
+    line-height: 1.7;
+
+    font-size: 15px;
+}
+
+/* ================= MAIN ================= */
+
+.container {
+
+    max-width: 900px;
+
+    margin: auto;
+
+    padding: 0 20px 60px;
+}
+
+.main-card {
+
+    padding: 30px;
+
+    border-radius: 27px;
+
+    background: rgba(5,27,19,.78);
+
+    border: 1px solid rgba(90,255,180,.1);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.45);
+
+    backdrop-filter: blur(18px);
+}
+
+/* ================= STEPS ================= */
+
+.steps {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 30px;
+}
+
+.step {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #587467;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    transition: .4s;
+}
+
+.step-number {
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 50%;
+
+    background: rgba(100,255,180,.06);
+
+    border: 1px solid rgba(100,255,180,.12);
+
+    transition: .4s;
+}
+
+/* ACTIVE STEP */
+
+.step.active {
+
+    color: #55efa3;
+}
+
+.step.active .step-number {
+
+    background: #1cbd73;
+
+    color: white;
+
+    border-color: #48f4a3;
+
+    box-shadow:
+        0 0 18px rgba(30,230,140,.35);
+}
+
+/* COMPLETED STEP */
+
+.step.completed {
+
+    color: #73d9a3;
+}
+
+.step.completed .step-number {
+
+    background: #116a46;
+
+    color: #67f5aa;
+
+    border-color: #39d991;
+}
+
+.line {
+
+    width: 35px;
+
+    height: 1px;
+
+    background: rgba(100,255,180,.12);
+}
+
+/* ================= UPLOAD ================= */
+
+#uploadScreen {
+
+    text-align: center;
+}
+
+.upload-box {
+
+    padding: 55px 25px;
+
+    border-radius: 22px;
+
+    border: 1.5px dashed rgba(70,255,170,.25);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,100,65,.18),
+            rgba(3,20,14,.5)
+        );
+
+    transition: .3s;
+}
+
+.upload-box:hover {
+
+    border-color: rgba(70,255,170,.6);
+
+    box-shadow:
+        0 0 40px rgba(30,240,150,.06);
+}
+
+.upload-icon {
+
+    width: 85px;
+    height: 85px;
+
+    margin: auto auto 20px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 24px;
+
+    font-size: 40px;
+
+    background: rgba(50,240,150,.08);
+
+    border: 1px solid rgba(70,255,170,.15);
+}
+
+.upload-box h2 {
+
+    margin-bottom: 8px;
+}
+
+.upload-box p {
+
+    color: #718e80;
+
+    font-size: 14px;
+
+    margin-bottom: 25px;
+}
+
+input[type="file"] {
+
+    display: none;
+}
+
+.choose-btn {
+
+    display: inline-block;
+
+    padding: 13px 23px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #42f4a1,
+            #20c979
+        );
+
+    color: #061b11;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+.choose-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(30,240,150,.15);
+}
+
+#file-name {
+
+    margin-top: 15px;
+
+    color: #63efa7;
+
+    font-size: 13px;
+}
+
+/* ================= SCAN BUTTON ================= */
+
+.scan-btn {
+
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 16px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #117b4c,
+            #1bc777
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.scan-btn:disabled {
+
+    opacity: .35;
+
+    cursor: not-allowed;
+}
+
+.scan-btn:not(:disabled):hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(20,220,130,.2);
+}
+
+/* ================= SCAN SCREEN ================= */
+
+#scanScreen {
+
+    display: none;
+
+    text-align: center;
+}
+
+.scan-title {
+
+    color: #60f2a8;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 20px;
+}
+
+.scanner {
+
+    position: relative;
+
+    width: min(100%, 520px);
+
+    height: 340px;
+
+    margin: auto;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    background: #020806;
+
+    border: 1px solid rgba(70,255,170,.18);
+
+    box-shadow:
+        inset 0 0 50px rgba(30,240,150,.05),
+        0 20px 50px rgba(0,0,0,.3);
+}
+
+.scanner img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    background: #020806;
+}
+
+.scanner-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,.15),
+            rgba(0,0,0,.05)
+        );
+
+    pointer-events: none;
+}
+
+/* SCANNING LINE */
+
+.scanning-line {
+
+    position: absolute;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #45f6a4,
+            #a4ffd2,
+            #45f6a4,
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px #45f6a4,
+        0 0 35px rgba(60,245,160,.6);
+
+    animation:
+        scanLine 2s ease-in-out infinite;
+
+    z-index: 4;
+}
+
+@keyframes scanLine {
+
+    0% {
+        top: 0;
+    }
+
+    50% {
+        top: calc(100% - 3px);
+    }
+
+    100% {
+        top: 0;
+    }
+}
+
+/* SCANNER CORNERS */
+
+.corner {
+
+    position: absolute;
+
+    width: 35px;
+
+    height: 35px;
+
+    border-color: #48f4a3;
+
+    border-style: solid;
+
+    z-index: 5;
+}
+
+.tl {
+
+    top: 18px;
+    left: 18px;
+
+    border-width:
+        3px 0 0 3px;
+}
+
+.tr {
+
+    top: 18px;
+    right: 18px;
+
+    border-width:
+        3px 3px 0 0;
+}
+
+.bl {
+
+    bottom: 18px;
+    left: 18px;
+
+    border-width:
+        0 0 3px 3px;
+}
+
+.br {
+
+    bottom: 18px;
+    right: 18px;
+
+    border-width:
+        0 3px 3px 0;
+}
+
+/* PROCESSING */
+
+.processing {
+
+    margin-top: 22px;
+
+    color: #91ad9e;
+
+    font-size: 14px;
+}
+
+.processing-dots {
+
+    color: #54f1a3;
+
+    letter-spacing: 4px;
+
+    animation: dots 1.2s infinite;
+}
+
+@keyframes dots {
+
+    0%,100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .25;
+    }
+}
+
+/* ================= RESULT ================= */
+
+#resultScreen {
+
+    display: none;
+}
+
+.result {
+
+    padding: 28px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,90,60,.3),
+            rgba(5,25,18,.6)
+        );
+
+    border: 1px solid rgba(70,255,170,.15);
+
+    animation:
+        resultAppear .6s ease;
+}
+
+@keyframes resultAppear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+.result-heading {
+
+    text-align: center;
+
+    color: #59efa3;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    font-weight: 800;
+
+    margin-bottom: 20px;
+}
+
+.result-image {
+
+    width: 240px;
+
+    height: 190px;
+
+    display: block;
+
+    margin: auto;
+
+    object-fit: cover;
+
+    border-radius: 17px;
+
+    border:
+        1px solid rgba(70,255,170,.15);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.35);
+}
+
+.result h2 {
+
+    text-align: center;
+
+    margin: 22px 0;
+
+    font-size: 38px;
+
+    color: #58f2a4;
+
+    text-transform: uppercase;
+}
+
+.confidence-label {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    color: #a7c0b2;
+
+    font-size: 13px;
+}
+
+.confidence-value {
+
+    color: #61f3a8;
+
+    font-weight: 800;
+}
+
+.progress {
+
+    height: 12px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background:
+        rgba(150,220,180,.1);
+}
+
+.progress-bar {
+
+    height: 100%;
+
+    width: {{ confidence }}%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #17b96f,
+            #45f5a3,
+            #63e9ff
+        );
+
+    box-shadow:
+        0 0 18px rgba(60,245,160,.35);
+
+    animation:
+        progress 1s ease;
+}
+
+@keyframes progress {
+
+    from {
+        width: 0;
+    }
+}
+
+.tip {
+
+    margin-top: 24px;
+
+    padding: 18px;
+
+    border-left:
+        3px solid #3ee99a;
+
+    border-radius: 12px;
+
+    background:
+        rgba(50,230,150,.06);
+
+    color: #9ab5a7;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+}
+
+.tip strong {
+
+    display: block;
+
+    color: #d9f8e7;
+
+    margin-bottom: 5px;
+}
+
+.again-btn {
+
+    display: block;
+
+    width: fit-content;
+
+    margin: 22px auto 0;
+
+    color: #62f1a7;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+.again-btn:hover {
+
+    color: #a4ffd0;
+}
+
+/* ================= ERROR ================= */
+
+.error {
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,70,70,.08);
+
+    border:
+        1px solid rgba(255,100,100,.15);
+
+    color: #ffaaaa;
+
+    text-align: center;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+
+    padding: 25px;
+
+    text-align: center;
+
+    color: #587468;
+
+    font-size: 12px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px) {
+
+    nav {
+
+        padding:
+            0 20px;
+    }
+
+    .status {
+
+        display: none;
+    }
+
+    .main-card {
+
+        padding: 18px;
+    }
+
+    .steps {
+
+        gap: 5px;
+    }
+
+    .step {
+
+        font-size: 10px;
+    }
+
+    .line {
+
+        width: 15px;
+    }
+
+    .scanner {
+
+        height: 280px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+    <div class="logo">
+
+        <span class="logo-icon">♻️</span>
+
+        Eco<span>Vision</span> AI
+
+    </div>
+
+
+    <div class="status">
+
+        <span class="status-dot"></span>
+
+        AI SYSTEM ONLINE
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="badge">
+
+        🔍 COMPUTER VISION WASTE SCANNER
+
+    </div>
+
+
+    <h1>
+
+        Scan.
+
+        <span>Identify.</span>
+
+        Recycle.
+
+    </h1>
+
+
+    <p>
+
+        Upload your waste image, scan it using our AI vision system,
+
+        and receive an intelligent waste classification.
+
+    </p>
+
+</section>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+
+<div class="main-card">
+
+
+<!-- ================= STEPS ================= -->
+
+<div class="steps">
+
+
+    <div
+
+        class="step {% if not result %}active{% else %}completed{% endif %}"
+
+        id="step1">
+
+        <div class="step-number">
+
+            {% if result %}✓{% else %}1{% endif %}
+
+        </div>
+
+        UPLOAD
+
+    </div>
+
+
+    <div class="line"></div>
+
+
+    <div
+
+        class="step {% if result %}completed{% else %}{% endif %}"
+
+        id="step2">
+
+        <div class="step-number">
+
+            {% if result %}✓{% else %}2{% endif %}
+
+        </div>
+
+        SCAN
+
+    </div>
+
+
+    <div class="line"></div>
+
+
+    <div
+
+        class="step {% if result %}active{% endif %}"
+
+        id="step3">
+
+        <div class="step-number">
+
+            {% if result %}✓{% else %}3{% endif %}
+
+        </div>
+
+        RESULT
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= UPLOAD SCREEN ================= -->
+
+<div
+
+    id="uploadScreen"
+
+    {% if result %}
+
+    style="display:none;"
+
+    {% endif %}
+
+>
+
+
+    <div class="upload-box">
+
+
+        <div class="upload-icon">
+
+            📸
+
+        </div>
+
+
+        <h2>
+
+            Upload Waste Image
+
+        </h2>
+
+
+        <p>
+
+            Select a clear image of the waste item you want
+
+            the AI to identify.
+
+        </p>
+
+
+        <label
+
+            for="image"
+
+            class="choose-btn">
+
+            📁 Choose Image
+
+        </label>
+
+
+        <input
+
+            type="file"
+
+            id="image"
+
+            name="image"
+
+            accept="image/*"
+
+        >
+
+
+        <div id="file-name"></div>
+
+
+    </div>
+
+
+    <button
+
+        class="scan-btn"
+
+        id="scanBtn"
+
+        disabled>
+
+        🔍 Scan Image With AI
+
+    </button>
+
+
+</div>
+
+
+<!-- ================= SCAN SCREEN ================= -->
+
+<div id="scanScreen">
+
+
+    <div class="scan-title">
+
+        ◉ AI COMPUTER VISION SCANNING
+
+    </div>
+
+
+    <div class="scanner">
+
+
+        <img
+
+            id="scanImage"
+
+            src=""
+
+            alt="Waste image">
+
+
+        <div class="scanner-overlay"></div>
+
+
+        <div class="scanning-line"></div>
+
+
+        <div class="corner tl"></div>
+
+        <div class="corner tr"></div>
+
+        <div class="corner bl"></div>
+
+        <div class="corner br"></div>
+
+
+    </div>
+
+
+    <div class="processing">
+
+        🤖 AI Processing
+
+        <span class="processing-dots">
+
+            ● ● ●
+
+        </span>
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= RESULT ================= -->
+
+{% if result %}
+
+
+<div
+
+    id="resultScreen"
+
+    style="display:block;">
+
+    
+    <div class="result">
+
+
+        <div class="result-heading">
+
+            ✦ AI ANALYSIS COMPLETE
+
+        </div>
+
+
+        <img
+
+            class="result-image"
+
+            src="{{ url_for('uploaded_file', filename=image_file) }}"
+
+            alt="Uploaded waste image">
+
+
+        <h2>
+
+            ♻️ {{ result }}
+
+        </h2>
+
+
+        <div class="confidence-label">
+
+
+            <span>
+
+                AI CONFIDENCE
+
+            </span>
+
+
+            <span class="confidence-value">
+
+                {{ confidence }}%
+
+            </span>
+
+
+        </div>
+
+
+        <div class="progress">
+
+            <div class="progress-bar"></div>
+
+        </div>
+
+
+        <div class="tip">
+
+
+            <strong>
+
+                💡 Disposal Recommendation
+
+            </strong>
+
+
+            {{ tip }}
+
+
+        </div>
+
+
+        <a
+
+            href="/"
+
+            class="again-btn">
+
+            ↻ Scan Another Image
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+{% endif %}
+
+
+<!-- ================= ERROR ================= -->
+
+{% if error %}
+
+
+<div class="error">
+
+    ⚠️ {{ error }}
+
+</div>
+
+
+{% endif %}
+
+
+</div>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    🐍 Python
+
+    &nbsp; • &nbsp;
+
+    Flask
+
+    &nbsp; • &nbsp;
+
+    TensorFlow
+
+    &nbsp; • &nbsp;
+
+    Computer Vision
+
+    <br><br>
+
+    AI Waste Segregation Mini Project
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+const imageInput =
+    document.getElementById("image");
+
+const fileName =
+    document.getElementById("file-name");
+
+const scanBtn =
+    document.getElementById("scanBtn");
+
+const uploadScreen =
+    document.getElementById("uploadScreen");
+
+const scanScreen =
+    document.getElementById("scanScreen");
+
+const scanImage =
+    document.getElementById("scanImage");
+
+const step1 =
+    document.getElementById("step1");
+
+const step2 =
+    document.getElementById("step2");
+
+const step3 =
+    document.getElementById("step3");
+
+
+let selectedFile = null;
+
+
+/* ================= FILE SELECT ================= */
+
+if (imageInput) {
+
+    imageInput.addEventListener(
+        "change",
+
+        function() {
+
+            if (this.files.length > 0) {
+
+                selectedFile =
+                    this.files[0];
+
+                fileName.textContent =
+                    "✓ Selected: " +
+                    selectedFile.name;
+
+                scanBtn.disabled =
+                    false;
+            }
+
+        }
+    );
+
+}
+
+
+/* ================= START SCANNING ================= */
+
+if (scanBtn) {
+
+    scanBtn.addEventListener(
+        "click",
+
+        function() {
+
+
+            if (!selectedFile) {
+
+                return;
+
+            }
+
+
+            /* SHOW SELECTED IMAGE */
+
+            scanImage.src =
+                URL.createObjectURL(
+                    selectedFile
+                );
+
+
+            /* CHANGE STEP 1 */
+
+            step1.classList.remove(
+                "active"
+            );
+
+            step1.classList.add(
+                "completed"
+            );
+
+            step1.querySelector(
+                ".step-number"
+            ).textContent = "✓";
+
+
+            /* CHANGE STEP 2 */
+
+            step2.classList.add(
+                "active"
+            );
+
+
+            /* HIDE UPLOAD */
+
+            uploadScreen.style.display =
+                "none";
+
+
+            /* SHOW SCANNER */
+
+            scanScreen.style.display =
+                "block";
+
+
+            /*
+                Wait 3 seconds so the
+                user can see the scanner.
+            */
+
+            setTimeout(
+
+                function() {
+
+
+                    /* STEP 2 COMPLETE */
+
+                    step2.classList.remove(
+                        "active"
+                    );
+
+                    step2.classList.add(
+                        "completed"
+                    );
+
+                    step2.querySelector(
+                        ".step-number"
+                    ).textContent = "✓";
+
+
+                    /*
+                        STEP 3 becomes active
+                        before sending image.
+                    */
+
+                    step3.classList.add(
+                        "active"
+                    );
+
+
+                    /*
+                        Send actual image
+                        to Flask.
+                    */
+
+                    const form =
+                        document.createElement(
+                            "form"
+                        );
+
+                    form.method =
+                        "POST";
+
+                    form.action =
+                        "/analyze";
+
+                    form.enctype =
+                        "multipart/form-data";
+
+
+                    const fileInput =
+                        document.createElement(
+                            "input"
+                        );
+
+                    fileInput.type =
+                        "file";
+
+                    fileInput.name =
+                        "image";
+
+                    fileInput.style.display =
+                        "none";
+
+
+                    const dataTransfer =
+                        new DataTransfer();
+
+                    dataTransfer.items.add(
+                        selectedFile
+                    );
+
+
+                    fileInput.files =
+                        dataTransfer.files;
+
+
+                    form.appendChild(
+                        fileInput
+                    );
+
+
+                    document.body.appendChild(
+                        form
+                    );
+
+
+                    form.submit();
+
+
+                },
+
+                3000
+
+            );
+
+        }
+
+    );
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
+
